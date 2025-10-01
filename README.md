@@ -31,7 +31,7 @@ It saves developers from needing real API keys, sandbox accounts, or actual mone
 Add this line to your Gemfile:
 
 ```ruby
-gem 'rails_payment_sandbox'
+gem 'payment_sandbox_rails'
 ```
 
 And then run:
@@ -43,7 +43,7 @@ bundle install
 Or install it yourself:
 
 ```bash
-gem install rails_payment_sandbox
+gem install payment_sandbox_rails
 ```
 
 ---
