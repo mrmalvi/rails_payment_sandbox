@@ -6,7 +6,7 @@
 require_relative "lib/rails_payment_sandbox/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "rails_payment_sandbox"
+  spec.name = "payment_sandbox_rails"
   spec.version = RailsPaymentSandbox::VERSION
   spec.authors = ["mrmalvi"]
   spec.email = ["malviyak00@gmail.com"]
@@ -27,11 +27,7 @@ Gem::Specification.new do |spec|
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   gemspec = File.basename(__FILE__)
-  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
-    ls.readlines("\x0", chomp: true).reject do |f|
-      f == gemspec || f.end_with?('.gem') || f.start_with?(*%w[bin/ Gemfile .gitignore .rspec spec/])
-    end
-  end
+  spec.files         = Dir["lib/**/*.rb"]
   spec.bindir = "exe"
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
