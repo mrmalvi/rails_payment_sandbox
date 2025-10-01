@@ -1,163 +1,141 @@
 # RailsPaymentSandbox
 
-RailsPaymentSandbox simulates multiple payment gateways locally with fake transactions for testing purposes.
+[![Gem Version](https://badge.fury.io/rb/rails-payment-sandbox.svg)](https://badge.fury.io/rb/rails-payment-sandbox)
+
+RailsPaymentSandbox simulates multiple payment gateways locally with fake transactions for **development and testing** purposes.
+It saves developers from needing real API keys, sandbox accounts, or actual money movement when testing payment flows.
+
+---
 
 ## Features
 
-- Supports `Stripe`, `Razorpay`, and `PayPal`
-- Generates fake transactions with random status: `success`, `failed`, `pending`
-- No real payments are made
-- Easy integration in development and tests
+- 🔌 Supports multiple gateways:
+  - `Stripe`
+  - `Razorpay`
+  - `PayPal`
+  - `Paytm`
+  - `Google Pay (GPay)`
+  - `Apple Pay`
+  - `PhonePe`
+  - `Amazon Pay`
+  - `Cashfree`
+- 🎲 Random or controlled statuses: `success`, `failed`, `pending`
+- 🧾 Generates fake `transaction_id` and `order_id`
+- 🛠 No real API calls, safe for local and CI environments
+- 📊 Easy integration with RSpec or Rails apps
 
 ---
 
 ## Installation
 
-Add this to your Gemfile:
+Add this line to your Gemfile:
 
 ```ruby
-gem 'rails_payment_sandbox'
+gem 'rails-payment-sandbox'
 ```
 
-Then run:
+And then run:
 
 ```bash
 bundle install
+```
+
+Or install it yourself:
+
+```bash
+gem install rails-payment-sandbox
 ```
 
 ---
 
 ## Usage
 
-### Basic Example
-
 ```ruby
 require "rails_payment_sandbox"
 
-# Optional configuration
-RailsPaymentSandbox.configure do |config|
-  config[:default_currency] = "INR"
-end
-
-# Create a fake Stripe transaction
-transaction = RailsPaymentSandbox::Gateway.new(
+# Create a new sandbox payment (random status)
+payment = RailsPaymentSandbox::Gateway.new(
   gateway: :stripe,
-  amount: 5000
+  amount: 1000,          # amount in smallest unit (e.g. paise for INR)
+  currency: "INR"
 )
 
-puts transaction.process
-```
+result = payment.process
 
-**Sample Output:**
-
-```json
-{
-  "gateway": "stripe",
-  "transaction_id": "STR-1696160001-2345",
-  "amount": 5000,
-  "currency": "INR",
-  "status": "success",
-  "message": "Payment completed successfully"
-}
-```
-
----
-
-### Simulate Multiple Gateways
-
-```ruby
-gateways = %i[stripe razorpay paypal]
-amount = 5000
-
-gateways.each do |gw|
-  tx = RailsPaymentSandbox::Gateway.new(gateway: gw, amount: amount)
-  result = tx.process
-
-  puts "Gateway: #{result[:gateway].to_s.capitalize}"
-  puts "Transaction ID: #{result[:transaction_id]}"
-  puts "Amount: #{result[:amount]} #{result[:currency]}"
-  puts "Status: #{result[:status]}"
-  puts "Message: #{result[:message]}"
-  puts "-" * 50
-end
+puts result
+# {
+#   gateway: :stripe,
+#   order_id: "ORD-1696212345-4821",
+#   transaction_id: "STR-1696212345-4821",
+#   amount: 1000,
+#   currency: "INR",
+#   status: :success,
+#   message: "Stripe payment completed successfully"
+# }
 ```
 
 ---
 
-### Simulate Multiple Transactions
+### Force a Specific Status
 
 ```ruby
-transactions = []
+payment = RailsPaymentSandbox::Gateway.new(
+  gateway: :razorpay,
+  amount: 500,
+  status: :failed
+)
 
-10.times do
-  gateways.each do |gw|
-    tx = RailsPaymentSandbox::Gateway.new(
-      gateway: gw,
-      amount: rand(100..10000),
-      status: [:success, :failed, :pending].sample
-    )
-    transactions << tx.process
-  end
-end
-
-puts transactions
+puts payment.process
+# => { gateway: :razorpay, status: :failed, message: "Razorpay payment failed", ... }
 ```
 
-- This simulates **30 transactions** (10 × 3 gateways) with random amounts and statuses.
-- Ideal for testing dashboards, reporting, or automated flows.
+---
+
+### Provide a Custom Order ID
+
+```ruby
+payment = RailsPaymentSandbox::Gateway.new(
+  gateway: :paypal,
+  amount: 1500,
+  order_id: "ORD-TEST-12345"
+)
+
+puts payment.process[:order_id]
+# => "ORD-TEST-12345"
+```
 
 ---
 
 ## Development
 
-After checking out the repo:
+After checking out the repo, run:
 
 ```bash
 bin/setup
+rake spec
 ```
 
-Run the tests:
+You can also run `bin/console` for an interactive prompt.
 
-```bash
-bundle exec rspec
-```
-
-Open an interactive console:
-
-```bash
-bin/console
-```
-
-Install the gem locally:
+To install this gem onto your local machine:
 
 ```bash
 bundle exec rake install
 ```
 
-Release a new version:
-
-```bash
-bundle exec rake release
-```
-
-This will:
-- Update the version number in `version.rb`
-- Build the `.gem` file
-- Push git commits and tag
-- Push the gem to [rubygems.org](https://rubygems.org)
+To release a new version:
+1. Update the version number in `lib/rails_payment_sandbox/version.rb`.
+2. Run `bundle exec rake release` (this will create a git tag, push commits/tags, and publish to [rubygems.org](https://rubygems.org)).
 
 ---
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at:
-
-[https://github.com/mrmalvi/rails-payment-sandbox](https://github.com/mrmalvi/rails_payment_sandbox)
-
-Please follow standard GitHub pull request workflow.
+Bug reports and pull requests are welcome on GitHub:
+👉 https://github.com/[USERNAME]/rails-payment-sandbox
 
 ---
 
 ## License
 
-MIT License
+This project is licensed under the [MIT License](LICENSE).

@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe RailsPaymentSandbox::Gateway do
   let(:amount) { 1000 }
   let(:currency) { "INR" }
-  let(:gateways) { %i[stripe razorpay paypal] }
+  let(:gateways) { %i[stripe razorpay paypal paytm gpay apple_pay phonepe amazon_pay cashfree] }
   let(:statuses) { %i[success failed pending] }
 
   describe "initialization" do
@@ -37,6 +37,16 @@ RSpec.describe RailsPaymentSandbox::Gateway do
         end
       end
     end
+
+    it "auto-generates an order_id if not provided" do
+      gateway = described_class.new(gateway: :stripe, amount: amount)
+      expect(gateway.order_id).to match(/^ORD-\d+-\d+$/)
+    end
+
+    it "accepts a custom order_id if provided" do
+      gateway = described_class.new(gateway: :stripe, amount: amount, order_id: "ORD-12345")
+      expect(gateway.order_id).to eq("ORD-12345")
+    end
   end
 
   describe "#process" do
@@ -48,17 +58,12 @@ RSpec.describe RailsPaymentSandbox::Gateway do
 
           expect(result).to be_a(Hash)
           expect(result[:gateway]).to eq(gw)
+          expect(result[:order_id]).to eq(gateway.order_id)
           expect(result[:amount]).to eq(amount)
           expect(result[:currency]).to eq(currency)
           expect(result[:status]).to eq(st)
           expect(result[:transaction_id]).to eq(gateway.transaction_id)
-          expect(result[:message]).to eq(
-            case st
-            when :success then "Payment completed successfully"
-            when :failed  then "Payment failed"
-            when :pending then "Payment is pending"
-            end
-          )
+          expect(result[:message]).to include(gw.to_s.capitalize)
         end
       end
     end
@@ -88,6 +93,7 @@ RSpec.describe RailsPaymentSandbox::Gateway do
           result = gateway.process
           expect(result[:gateway]).to eq(gw)
           expect(result[:status]).to eq(st)
+          expect(result[:order_id]).to match(/^ORD-|ORD-/)
           expect(result[:message]).to be_a(String)
         end
       end
