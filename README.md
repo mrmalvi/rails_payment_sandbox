@@ -14,7 +14,7 @@ RailsPaymentSandbox simulates multiple payment gateways locally with fake transa
 Add this to your Gemfile:
 
 ```ruby
-gem 'rails-payment-sandbox', git: 'https://github.com/mrmalvi/rails-payment-sandbox'
+gem 'rails-payment-sandbox'
 ```
 
 ## Usage
