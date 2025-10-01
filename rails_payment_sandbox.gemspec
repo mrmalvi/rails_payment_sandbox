@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["malviyak00@gmail.com"]
 
   spec.summary       = "Simulate multiple payment gateways locally with fake data for testing"
-  spec.description   = "RailsPaymentSandbox helps developers test payment flows locally without hitting real gateways. It simulates Stripe, Razorpay, PayPal, and provides fake transactions with random statuses."
+  spec.description   = "Rails Payment Sandbox helps developers test payment flows locally without hitting real gateways. It simulates Stripe, Razorpay, PayPal, and provides fake transactions with random statuses."
   spec.homepage      = "https://github.com/mrmalvi/rails_payment_sandbox"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
