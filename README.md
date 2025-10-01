@@ -1,6 +1,6 @@
 # RailsPaymentSandbox
 
-[![Gem Version](https://badge.fury.io/rb/rails-payment-sandbox.svg)](https://badge.fury.io/rb/rails-payment-sandbox)
+[![Gem Version](https://badge.fury.io/rb/rails_payment_sandbox.svg)](https://badge.fury.io/rb/rails_payment_sandbox)
 
 RailsPaymentSandbox simulates multiple payment gateways locally with fake transactions for **development and testing** purposes.
 It saves developers from needing real API keys, sandbox accounts, or actual money movement when testing payment flows.
@@ -31,7 +31,7 @@ It saves developers from needing real API keys, sandbox accounts, or actual mone
 Add this line to your Gemfile:
 
 ```ruby
-gem 'rails-payment-sandbox'
+gem 'rails_payment_sandbox'
 ```
 
 And then run:
@@ -43,7 +43,7 @@ bundle install
 Or install it yourself:
 
 ```bash
-gem install rails-payment-sandbox
+gem install rails_payment_sandbox
 ```
 
 ---
@@ -132,7 +132,7 @@ To release a new version:
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub:
-👉 https://github.com/[USERNAME]/rails-payment-sandbox
+👉 https://github.com/[USERNAME]/rails_payment_sandbox
 
 ---
 
