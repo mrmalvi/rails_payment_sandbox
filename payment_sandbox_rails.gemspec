@@ -3,6 +3,8 @@
 # gem build rails_payment_sandbox.gemspec
 # gem push ./rails_payment_sandbox-0.1.1.gem
 
+# gem yank rails_payment_sandbox -v 0.1.1 for delete
+
 require_relative "lib/rails_payment_sandbox/version"
 
 Gem::Specification.new do |spec|
