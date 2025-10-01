@@ -1,4 +1,7 @@
 # frozen_string_literal: true
+# create gem
+# gem build rails_payment_sandbox.gemspec
+# gem push ./rails_payment_sandbox-0.1.1.gem
 
 require_relative "lib/rails_payment_sandbox/version"
 
