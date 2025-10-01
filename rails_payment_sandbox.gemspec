@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+require_relative "lib/rails_payment_sandbox/version"
+
+Gem::Specification.new do |spec|
+  spec.name = "rails_payment_sandbox"
+  spec.version = RailsPaymentSandbox::VERSION
+  spec.authors = ["mrmalvi"]
+  spec.email = ["malviyak00@gmail.com"]
+
+  spec.summary       = "Simulate multiple payment gateways locally with fake data for testing"
+  spec.description   = "RailsPaymentSandbox helps developers test payment flows locally without hitting real gateways. It simulates Stripe, Razorpay, PayPal, and provides fake transactions with random statuses."
+  spec.homepage      = "https://github.com/mrmalvi/rails_payment_sandbox"
+  spec.license       = "MIT"
+  spec.required_ruby_version = ">= 2.6.0"
+
+  spec.metadata["homepage_uri"]    = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/mrmalvi/rails_payment_sandbox"
+  spec.metadata["changelog_uri"]   = "https://github.com/mrmalvi/rails_payment_sandbox/blob/main/CHANGELOG.md"
+
+  spec.add_development_dependency "rspec", "~> 3.12"
+
+
+  # Specify which files should be added to the gem when it is released.
+  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  gemspec = File.basename(__FILE__)
+  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
+    ls.readlines("\x0", chomp: true).reject do |f|
+      f == gemspec || f.end_with?('.gem') || f.start_with?(*%w[bin/ Gemfile .gitignore .rspec spec/])
+    end
+  end
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  # Uncomment to register a new dependency of your gem
+  # spec.add_dependency "example-gem", "~> 1.0"
+
+  # For more information and examples about making a new gem, check out our
+  # guide at: https://bundler.io/guides/creating_gem.html
+end
